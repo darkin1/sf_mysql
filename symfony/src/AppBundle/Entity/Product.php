@@ -18,6 +18,7 @@ class Product
         $this->createdAt = new \DateTime();
     }
 
+
     /**
      * @var int
      *
@@ -131,4 +132,3 @@ class Product
         return $this->createdAt;
     }
 }
-

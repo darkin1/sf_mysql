@@ -94,4 +94,3 @@ class Comment
         return $this->description;
     }
 }
-
