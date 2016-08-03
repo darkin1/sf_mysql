@@ -37,6 +37,7 @@ webapp_php:
     file: ./symfony/docker/docker-compose.yml
     service: webapp_php
   links:
+    - mysql
     - redis
   log_opt:
     max-size: 15k
