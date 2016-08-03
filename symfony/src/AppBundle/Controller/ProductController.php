@@ -14,6 +14,10 @@ class ProductController extends Controller
     public function createAction()
     {
 
+//        $redis = $this->container->get('snc_redis.default');
+//        $val = $redis->incr('foo3:bar3');
+//        dump($val);
+
         $product = new Product();
         $product->setName('p' . time());
         $product->setType('type1');
