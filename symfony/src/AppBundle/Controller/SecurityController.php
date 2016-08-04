@@ -31,4 +31,18 @@ class SecurityController extends Controller
             )
         );
     }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logoutAction() {
+
+    }
+
+    /**
+     * @Route("/logged", name="logged")
+     */
+    public function loggedAction() {
+        return $this->render('AppBundle:Security:logged.html.twig');
+    }
 }
