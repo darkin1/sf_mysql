@@ -35,6 +35,19 @@ class Comment
      */
     private $description;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="productId", type="integer")
+     */
+    private $productId;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="comments")
+     * @ORM\JoinColumn(name="productId", referencedColumnName="id")
+     */
+    private $product;
+
 
     /**
      * Get id
@@ -92,5 +105,53 @@ class Comment
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set product
+     *
+     * @param \AppBundle\Entity\Product $product
+     *
+     * @return Comment
+     */
+    public function setProduct(\AppBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \AppBundle\Entity\Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * Set productId
+     *
+     * @param integer $productId
+     *
+     * @return Comment
+     */
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+
+        return $this;
+    }
+
+    /**
+     * Get productId
+     *
+     * @return integer
+     */
+    public function getProductId()
+    {
+        return $this->productId;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,6 +17,7 @@ class Product
     function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->products = new ArrayCollection();
     }
 
 
@@ -49,6 +51,10 @@ class Product
      */
     private $createdAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="product", cascade={"all"})
+     */
+    private $comments;
 
     /**
      * Get id
@@ -130,5 +136,42 @@ class Product
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     *
+     * @return Product
+     */
+    public function addComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        //dodane
+        $comment->setProduct($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     */
+    public function removeComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }
