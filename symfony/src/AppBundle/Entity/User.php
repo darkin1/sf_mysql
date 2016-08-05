@@ -3,12 +3,18 @@ namespace AppBundle\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * User
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ *
+ * @UniqueEntity(fields="email", message="Email is already in use")
+ * @UniqueEntity(fields="username", message="Username is already in use")
+ *
  */
 class User implements UserInterface, \Serializable
 {
@@ -20,6 +26,14 @@ class User implements UserInterface, \Serializable
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
+    private $email;
 
     /**
      * @var string
@@ -38,7 +52,17 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=64, nullable=true)
+     *
+     *
      */
     private $password;
 
@@ -87,7 +111,7 @@ class User implements UserInterface, \Serializable
      */
     public function getUsername()
     {
-        return $this->username;
+        return $this->email;
     }
 
     /**
@@ -167,7 +191,7 @@ class User implements UserInterface, \Serializable
      */
     public function getSalt()
     {
-        // TODO: Implement getSalt() method.
+        return null;
     }
 
     /**
@@ -189,11 +213,7 @@ class User implements UserInterface, \Serializable
      */
     public function serialize()
     {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-            // see section on salt below
+        return serialize(array($this->id, $this->username, $this->password, // see section on salt below
             // $this->salt,
         ));
     }
@@ -209,11 +229,7 @@ class User implements UserInterface, \Serializable
      */
     public function unserialize($serialized)
     {
-        list (
-            $this->id,
-            $this->username,
-            $this->password,
-            // see section on salt below
+        list ($this->id, $this->username, $this->password, // see section on salt below
             // $this->salt
             ) = unserialize($serialized);
     }
@@ -239,5 +255,51 @@ class User implements UserInterface, \Serializable
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set plainPassword
+     *
+     * @param string $plainPassword
+     *
+     * @return User
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+        return $this;
+    }
+
+    /**
+     * Get plainPlassword
+     *
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
     }
 }
